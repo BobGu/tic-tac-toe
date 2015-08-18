@@ -1,5 +1,9 @@
 class Game
+  attr_accessor :input, :output, :board
   def initialize
+    self.input = $stdin
+    self.output = $stdout
+
     @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     @com = "X"
     @hum = "O"
@@ -29,6 +33,10 @@ class Game
         spot = nil
       end
     end
+  end
+
+  def valid_move?(spot)
+    @board.include?(spot.to_s) && @board[spot] != "X" && @board[spot] != "O"
   end
 
   def eval_board
@@ -98,6 +106,3 @@ class Game
   end
 
 end
-
-game = Game.new
-game.start_game
