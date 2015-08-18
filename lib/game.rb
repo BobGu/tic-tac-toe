@@ -1,9 +1,10 @@
+require 'message_printer'
 class Game
   attr_accessor :input, :output, :board
   def initialize
     self.input = $stdin
     self.output = $stdout
-
+    @message_print = MessagePrinter.new
     @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     @com = "X"
     @hum = "O"
@@ -27,9 +28,10 @@ class Game
     spot = nil
     until spot
       spot = gets.chomp.to_i
-      if @board[spot] != "X" && @board[spot] != "O"
+      if valid_move?(spot)
         @board[spot] = @hum
       else
+        @message_print.invalid_move(spot)
         spot = nil
       end
     end
@@ -47,7 +49,7 @@ class Game
         @board[spot] = @com
       else
         spot = get_best_move(@board, @com)
-        if @board[spot] != "X" && @board[spot] != "O"
+        if valid_move?(spot)
           @board[spot] = @com
         else
           spot = nil
@@ -56,14 +58,11 @@ class Game
     end
   end
 
-  def get_best_move(board, next_player, depth = 0, best_score = {})
-    available_spaces = []
-    best_move = nil
-    board.each do |s|
-      if s != "X" && s != "O"
-        available_spaces << s
-      end
-    end
+  def available_spaces
+    board.reject { |space| space == "X" || space == "Y" }
+  end
+
+  def get_best_move(board, next_player)
     available_spaces.each do |as|
       board[as.to_i] = @com
       if game_is_over(board)
