@@ -22,6 +22,10 @@ class Game
     [[board[0], board[4], board[8]] , [board[2], board[4], board[6]]]
   end
 
+  def available_corners
+    available_spaces.select { |space| space == "0" || space == "2" || space == "6" || space == "8"}
+  end
+
   def start_game
     MessagePrinter.welcome
     MessagePrinter.instructions(@hum)
@@ -66,7 +70,7 @@ class Game
         @board[4] = @com
         spot = 4
       else
-        spot = get_best_move(@board, @com)
+        spot = get_best_move
         if valid_move?(spot)
           @board[spot] = @com
         else
@@ -81,7 +85,7 @@ class Game
     board.reject { |space| space == "X" || space == "O" }
   end
 
-  def get_best_move(board, next_player)
+  def get_best_move
     best_move = nil
     available_spaces.each do |as|
       board[as.to_i] = @com
@@ -103,8 +107,12 @@ class Game
     if best_move
       return best_move
     else
-      n = rand(0..available_spaces.count)
-      return available_spaces[n].to_i
+      if available_corners.count > 0
+        n = available_corners.sample
+      else
+        n = available_spaces.sample
+      end
+      return n.to_i
     end
   end
 
@@ -134,4 +142,8 @@ class Game
     board.all? { |s| s == "X" || s == "O" }
   end
 
+
 end
+
+game = Game.new
+game.start_game

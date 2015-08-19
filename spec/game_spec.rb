@@ -118,4 +118,23 @@ context "when playing the game" do
       expect(@game.tie?).to be false
     end
   end
+
+  describe "available_corners" do
+    it "returns the availble corners" do
+      expect(@game.available_corners).to eq(["0", "2", "6", "8"])
+      @game.board[0] = ["X"]
+      expect(@game.available_corners).to eq(["2", "6", "8"])
+    end
+  end
+
+  describe "#get_best_move" do
+    it "automatically returns a corner spot if center square is taken" do
+      @game.board[4] = 'O'
+      result = @game.get_best_move
+      expect(["0", "2", "6", "8"]).to include(result.to_s)
+    end
+  end
+
+  describe ""
+
 end

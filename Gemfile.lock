@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.0)
+    colorize (0.7.7)
     diff-lcs (1.2.5)
     method_source (0.8.2)
     nyan-cat-formatter (0.11)
@@ -30,10 +31,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   nyan-cat-formatter
   pry
   rb-readline
   rspec
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
