@@ -16,14 +16,13 @@ context "when playing the game" do
 
   describe "#available_spaces" do
     it "returns the available spaces" do
-      @game.board = ["0", "1", "2", "X", "Y", "X", "6", "7", "8"]
+      @game.board = ["0", "1", "2", "X", "O", "X", "6", "7", "8"]
       expect(@game.available_spaces).to eq(["0", "1", "2", "6", "7", "8"])
     end
   end
 
   describe "#center_square_available?" do
     it "returns true or false if avaialbe" do
-      @game.board = (0..8).to_a.map { |number| number.to_s }
       expect(@game.center_square_available?).to be true
       @game.board[4] = "X"
       expect(@game.center_square_available?).to be false
@@ -49,7 +48,7 @@ context "when playing the game" do
 
   describe "#three_across?" do
     it "return true if 3 of the pieces are the same" do
-      @game.board = ["X", "X", "X", "O", "O", "5", "6", "7", "8"]
+      @game.board = ["O", "O", "O", "O", "O", "5", "6", "7", "8"]
       expect(@game.three_across?).to be true
       @game.board = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
       expect(@game.three_across?).to be true
@@ -67,7 +66,16 @@ context "when playing the game" do
     end
   end
 
-  
+  describe "#three_vertically?" do
+    it "returns true if 3 of the pieces are the same vertically" do
+      @game.board = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
+      expect(@game.three_vertically?).to be true
+      @game.board = ["0", "O", "X", "3", "O", "X", "6", "O", "8"]
+      expect(@game.three_vertically?).to be true
+      @game.board = ["X", "X", "2", "X", "4", "O", "6", "O", "8"]
+      expect(@game.three_vertically?).to be false
+    end
+  end
 
 
 end

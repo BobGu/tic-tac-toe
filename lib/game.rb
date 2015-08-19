@@ -72,7 +72,7 @@ class Game
   end
 
   def available_spaces
-    board.reject { |space| space == "X" || space == "Y" }
+    board.reject { |space| space == "X" || space == "O" }
   end
 
   def get_best_move(board, next_player)
@@ -103,7 +103,13 @@ class Game
 
   def three_across?
     rows.any? do |row|
-      row.all? { |space| space == 'X' } || row.all? { |space| space == 'Y' }
+      row.all? { |space| space == 'X' } || row.all? { |space| space == 'O' }
+    end
+  end
+
+  def three_vertically?
+    columns.any? do |column|
+      column.all? { |space| space == 'X' } || column.all? { |space| space == 'O' }
     end
   end
 
