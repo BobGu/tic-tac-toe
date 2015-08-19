@@ -6,7 +6,7 @@ class Game
     self.input = $stdin
     self.output = $stdout
     @message_print = MessagePrinter.new
-    @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+    @board = (0..8).to_a.map { |n| n.to_s }
     @com = "X"
     @hum = "O"
   end
@@ -19,13 +19,17 @@ class Game
     rows[0].zip(rows[1], rows[2])
   end
 
+  def diagonals
+    [[board[0], board[4], board[8]] , [board[2], board[4], board[6]]]
+  end
+
   def start_game
     puts "Welcome to my Tic Tac Toe game"
     puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
     puts "Please select your spot."
-    until game_is_over(@board) || tie(@board)
+    until is_won?(@board) || tie(@board)
       get_human_spot
-      if !game_is_over(@board) && !tie(@board)
+      if !is_won?(@board) && !tie(@board)
         eval_board
       end
       puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
@@ -78,13 +82,13 @@ class Game
   def get_best_move(board, next_player)
     available_spaces.each do |as|
       board[as.to_i] = @com
-      if game_is_over(board)
+      if is_won?
         best_move = as.to_i
         board[as.to_i] = as
         return best_move
       else
         board[as.to_i] = @hum
-        if game_is_over(board)
+        if is_won?
           best_move = as.to_i
           board[as.to_i] = as
           return best_move
@@ -113,13 +117,14 @@ class Game
     end
   end
 
-  def game_is_over(b)
-    three_across? ||
-    [b[0], b[3], b[6]].uniq.length == 1 ||
-    [b[1], b[4], b[7]].uniq.length == 1 ||
-    [b[2], b[5], b[8]].uniq.length == 1 ||
-    [b[0], b[4], b[8]].uniq.length == 1 ||
-    [b[2], b[4], b[6]].uniq.length == 1
+  def three_diagonally?
+    diagonals.any? do |diagonal|
+      diagonal.all? { |space| space == 'X' } || diagonal.all? { |space| space == 'O' }
+    end
+  end
+
+  def is_won?
+    three_across? || three_vertically? || three_diagonally?
   end
 
   def tie(b)

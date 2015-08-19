@@ -78,4 +78,35 @@ context "when playing the game" do
   end
 
 
+  describe "#diagonals" do
+    it "return the diagoanls based on the board" do
+      diagonals = @game.diagonals
+      expect(diagonals[0]).to eq(["0","4","8"])
+      expect(diagonals[1]).to eq(["2","4","6"])
+    end
+  end
+
+  describe "#three_diagonally?" do
+    it "returns true or false if 3 of the pieces are the same diagonally" do
+      @game.board = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
+      expect(@game.three_diagonally?).to be true
+      @game.board = ["0", "1", "X", "3", "X", "O", "X", "O", "8"]
+      expect(@game.three_diagonally?).to be true
+      @game.board = ["0", "1", "X", "3", "X", "O", "6", "O", "8"]
+      expect(@game.three_diagonally?).to be false
+    end
+  end
+
+  describe "#is_won?" do
+    it "returns true or false if game is won" do
+      @game.board = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
+      expect(@game.is_won?).to be true
+      @game.board = ["0", "1", "X", "3", "X", "O", "6", "O", "8"]
+      expect(@game.is_won?).to be false
+      @game.board = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
+      expect(@game.is_won?).to be true
+      @game.board = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
+      expect(@game.is_won?).to be true
+    end
+  end
 end
