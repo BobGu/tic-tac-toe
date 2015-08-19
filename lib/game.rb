@@ -11,6 +11,10 @@ class Game
     @hum = "O"
   end
 
+  def rows
+    board.each_slice(3).to_a
+  end
+
   def start_game
     puts "Welcome to my Tic Tac Toe game"
     puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
@@ -93,10 +97,14 @@ class Game
     end
   end
 
+  def three_across?
+    rows.any? do |row|
+      row.all? { |space| space == 'X' } || row.all? { |space| space == 'Y' }
+    end
+  end
+
   def game_is_over(b)
-    [b[0], b[1], b[2]].uniq.length == 1 ||
-    [b[3], b[4], b[5]].uniq.length == 1 ||
-    [b[6], b[7], b[8]].uniq.length == 1 ||
+    three_across? ||
     [b[0], b[3], b[6]].uniq.length == 1 ||
     [b[1], b[4], b[7]].uniq.length == 1 ||
     [b[2], b[5], b[8]].uniq.length == 1 ||

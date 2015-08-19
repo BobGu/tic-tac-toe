@@ -38,5 +38,16 @@ context "when playing the game" do
     end
   end
 
+  describe "#three_across?" do
+    it "return true if 3 of the pieces are the same" do
+      @game.board = ["X", "X", "X", "O", "O", "5", "6", "7", "8"]
+      expect(@game.three_across?).to be true
+      @game.board = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
+      expect(@game.three_across?).to be true
+      @game.board = ["O", "X", "O", "X", "X", "5", "6", "7", "8"]
+      expect(@game.three_across?).to be false
+    end
+  end
+
 
 end
