@@ -5,7 +5,6 @@ class Game
   def initialize
     self.input = $stdin
     self.output = $stdout
-    @message_print = MessagePrinter.new
     @board = (0..8).to_a.map { |n| n.to_s }
     @com = "X"
     @hum = "O"
@@ -24,13 +23,17 @@ class Game
   end
 
   def start_game
-    puts "Welcome to my Tic Tac Toe game"
-    puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
+    MessagePrinter.welcome
+    MessagePrinter.instructions(@hum)
+    MessagePrinter.board(@board)
     puts "Please select your spot."
+    until won? || tie?
+      MessagePrinter.players_turn
       get_human_spot
+      if !won? && !tie?
         eval_board
       end
-      puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
+      MessagePrinter.board(@board)
     end
     puts "Game over"
   end
@@ -42,7 +45,7 @@ class Game
       if valid_move?(spot)
         @board[spot] = @hum
       else
-        @message_print.invalid_move(spot)
+        MessagePrinter.invalid_move(spot)
         spot = nil
       end
     end
@@ -71,6 +74,7 @@ class Game
         end
       end
     end
+    MessagePrinter.computer_move(spot, @com)
   end
 
   def available_spaces
@@ -78,13 +82,16 @@ class Game
   end
 
   def get_best_move(board, next_player)
+    best_move = nil
     available_spaces.each do |as|
       board[as.to_i] = @com
+      if won?
         best_move = as.to_i
         board[as.to_i] = as
         return best_move
       else
         board[as.to_i] = @hum
+        if won?
           best_move = as.to_i
           board[as.to_i] = as
           return best_move
@@ -119,6 +126,7 @@ class Game
     end
   end
 
+  def won?
     three_across? || three_vertically? || three_diagonally?
   end
 
