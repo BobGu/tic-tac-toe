@@ -1,4 +1,4 @@
-require 'message_printer'
+require './lib/message_printer'
 require 'pry'
 class Game
   attr_accessor :input, :output, :board
@@ -27,9 +27,7 @@ class Game
     puts "Welcome to my Tic Tac Toe game"
     puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
     puts "Please select your spot."
-    until is_won?(@board) || tie?
       get_human_spot
-      if !is_won?(@board) && !tie?
         eval_board
       end
       puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
@@ -82,13 +80,11 @@ class Game
   def get_best_move(board, next_player)
     available_spaces.each do |as|
       board[as.to_i] = @com
-      if is_won?
         best_move = as.to_i
         board[as.to_i] = as
         return best_move
       else
         board[as.to_i] = @hum
-        if is_won?
           best_move = as.to_i
           board[as.to_i] = as
           return best_move
@@ -123,7 +119,6 @@ class Game
     end
   end
 
-  def is_won?
     three_across? || three_vertically? || three_diagonally?
   end
 

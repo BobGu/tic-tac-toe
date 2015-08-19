@@ -97,16 +97,16 @@ context "when playing the game" do
     end
   end
 
-  describe "#is_won?" do
+  describe "#won?" do
     it "returns true or false if game is won" do
       @game.board = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
-      expect(@game.is_won?).to be true
+      expect(@game.won?).to be true
       @game.board = ["0", "1", "X", "3", "X", "O", "6", "O", "8"]
-      expect(@game.is_won?).to be false
+      expect(@game.won?).to be false
       @game.board = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
-      expect(@game.is_won?).to be true
+      expect(@game.won?).to be true
       @game.board = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
-      expect(@game.is_won?).to be true
+      expect(@game.won?).to be true
     end
   end
 
