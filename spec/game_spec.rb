@@ -38,6 +38,15 @@ context "when playing the game" do
     end
   end
 
+  describe "#rows" do
+    it "returns the rows of the game board" do
+      rows = @game.rows
+      expect(rows[0]).to eq(["0", "1", "2"])
+      expect(rows[1]).to eq(["3", "4", "5"])
+      expect(rows[2]).to eq(["6", "7", "8"])
+    end
+  end
+
   describe "#three_across?" do
     it "return true if 3 of the pieces are the same" do
       @game.board = ["X", "X", "X", "O", "O", "5", "6", "7", "8"]
@@ -48,6 +57,17 @@ context "when playing the game" do
       expect(@game.three_across?).to be false
     end
   end
+
+  describe "#columns" do
+    it "return the columns of the game board" do
+      columns = @game.columns
+      expect(columns[0]).to eq(["0","3","6"])
+      expect(columns[1]).to eq(["1","4","7"])
+      expect(columns[2]).to eq(["2","5","8"])
+    end
+  end
+
+  
 
 
 end
