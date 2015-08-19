@@ -109,4 +109,13 @@ context "when playing the game" do
       expect(@game.is_won?).to be true
     end
   end
+
+  describe "#tie?" do
+    it "returns true or false if it is a tie" do
+      @game.board = ["O", "X", "O", "X", "O", "X", "X", "O", "X"]
+      expect(@game.tie?).to be true
+      @game.board = ["O", "X", "O", "X", "O", "X", "X", "O", "8"]
+      expect(@game.tie?).to be false
+    end
+  end
 end

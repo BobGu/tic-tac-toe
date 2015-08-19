@@ -27,9 +27,9 @@ class Game
     puts "Welcome to my Tic Tac Toe game"
     puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
     puts "Please select your spot."
-    until is_won?(@board) || tie(@board)
+    until is_won?(@board) || tie?
       get_human_spot
-      if !is_won?(@board) && !tie(@board)
+      if !is_won?(@board) && !tie?
         eval_board
       end
       puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
@@ -127,8 +127,8 @@ class Game
     three_across? || three_vertically? || three_diagonally?
   end
 
-  def tie(b)
-    b.all? { |s| s == "X" || s == "O" }
+  def tie?
+    board.all? { |s| s == "X" || s == "O" }
   end
 
 end
