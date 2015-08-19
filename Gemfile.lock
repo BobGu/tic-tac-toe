@@ -10,6 +10,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rb-readline (0.5.3)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -31,6 +32,7 @@ PLATFORMS
 DEPENDENCIES
   nyan-cat-formatter
   pry
+  rb-readline
   rspec
 
 BUNDLED WITH

@@ -1,4 +1,5 @@
 require 'message_printer'
+require 'pry'
 class Game
   attr_accessor :input, :output, :board
   def initialize
@@ -41,12 +42,16 @@ class Game
     @board.include?(spot.to_s) && @board[spot] != "X" && @board[spot] != "O"
   end
 
+  def center_square_available?
+    @board.include?("4")
+  end
+
   def eval_board
     spot = nil
     until spot
-      if @board[4] == "4"
+      if center_square_available?
+        @board[4] = @com
         spot = 4
-        @board[spot] = @com
       else
         spot = get_best_move(@board, @com)
         if valid_move?(spot)
@@ -89,7 +94,6 @@ class Game
   end
 
   def game_is_over(b)
-
     [b[0], b[1], b[2]].uniq.length == 1 ||
     [b[3], b[4], b[5]].uniq.length == 1 ||
     [b[6], b[7], b[8]].uniq.length == 1 ||
