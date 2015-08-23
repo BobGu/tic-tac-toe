@@ -8,8 +8,6 @@ class Game
     self.input = $stdin
     self.output = $stdout
     @board = (0..8).to_a.map { |n| n.to_s }
-    @com = "X"
-    @hum = "O"
   end
 
   def get_players_piece
@@ -39,8 +37,12 @@ class Game
     @player
   end
 
+  def bot
+    @bot
+  end
+
   def create_bot
-    Bot.new(bots_piece)
+    @bot = Bot.new(bots_piece)
   end
 
   def valid_piece?(input)
@@ -81,7 +83,7 @@ class Game
     until spot
       spot = gets.chomp.to_i
       if valid_move?(spot)
-        @board[spot] = @hum
+        @board[spot] = @player.piece
       else
         MessagePrinter.invalid_move(spot)
         spot = nil
@@ -101,18 +103,18 @@ class Game
     spot = nil
     until spot
       if center_square_available?
-        @board[4] = @com
+        @board[4] = @bot.piece
         spot = 4
       else
         spot = get_best_move
         if valid_move?(spot)
-          @board[spot] = @com
+          @board[spot] = @bot.piece
         else
           spot = nil
         end
       end
     end
-    MessagePrinter.computer_move(spot, @com)
+    MessagePrinter.computer_move(spot, @bot.piece)
   end
 
   def available_spaces
@@ -122,13 +124,13 @@ class Game
   def get_best_move
     best_move = nil
     available_spaces.each do |as|
-      board[as.to_i] = @com
+      board[as.to_i] = @bot.piece
       if won?
         best_move = as.to_i
         board[as.to_i] = as
         return best_move
       else
-        board[as.to_i] = @hum
+        board[as.to_i] = @player.piece
         if won?
           best_move = as.to_i
           board[as.to_i] = as

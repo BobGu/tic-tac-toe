@@ -49,6 +49,8 @@ context "when playing the game" do
 
   describe "#eval_board" do
     it "computer plays center square if available" do
+      @game.assign_players_piece('O')
+      @game.create_bot
       @game.board = (0..8).to_a.map { |number| number.to_s }
       @game.eval_board
       expect(@game.center_square_available?).to be false
@@ -147,12 +149,12 @@ context "when playing the game" do
 
   describe "#get_best_move" do
     it "automatically returns a corner spot if center square is taken" do
+      @game.assign_players_piece('O')
+      @game.create_bot
       @game.board[4] = 'O'
       result = @game.get_best_move
       expect(["0", "2", "6", "8"]).to include(result.to_s)
     end
   end
-
-  describe ""
 
 end
