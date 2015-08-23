@@ -6,6 +6,7 @@ context "when playing the game" do
   before(:each) do
     @game = Game.new
   end
+
   describe "#assign_players_piece" do
     it "assign_players_piece" do
       @game.assign_players_piece('X')
@@ -22,31 +23,6 @@ context "when playing the game" do
     end
   end
 
-  describe "#valid_move?" do
-    it "returns true for valid moves and false for invalid" do
-      @game.board = ["0", "1", "2", "X", "4", "5", "6", "7", "O"]
-      expect(@game.valid_move?(0)).to be true
-      expect(@game.valid_move?(3)).to be false
-      expect(@game.valid_move?(8)).to be false
-      expect(@game.valid_move?("hello")).to be false
-    end
-  end
-
-  describe "#available_spaces" do
-    it "returns the available spaces" do
-      @game.board = ["0", "1", "2", "X", "O", "X", "6", "7", "8"]
-      expect(@game.available_spaces).to eq(["0", "1", "2", "6", "7", "8"])
-    end
-  end
-
-  describe "#center_square_available?" do
-    it "returns true or false if avaialbe" do
-      expect(@game.center_square_available?).to be true
-      @game.board[4] = "X"
-      expect(@game.center_square_available?).to be false
-    end
-  end
-
   describe "#eval_board" do
     it "computer plays center square if available" do
       @game.assign_players_piece('O')
@@ -54,15 +30,6 @@ context "when playing the game" do
       @game.board = (0..8).to_a.map { |number| number.to_s }
       @game.eval_board
       expect(@game.center_square_available?).to be false
-    end
-  end
-
-  describe "#rows" do
-    it "returns the rows of the game board" do
-      rows = @game.rows
-      expect(rows[0]).to eq(["0", "1", "2"])
-      expect(rows[1]).to eq(["3", "4", "5"])
-      expect(rows[2]).to eq(["6", "7", "8"])
     end
   end
 
@@ -77,15 +44,6 @@ context "when playing the game" do
     end
   end
 
-  describe "#columns" do
-    it "return the columns of the game board" do
-      columns = @game.columns
-      expect(columns[0]).to eq(["0","3","6"])
-      expect(columns[1]).to eq(["1","4","7"])
-      expect(columns[2]).to eq(["2","5","8"])
-    end
-  end
-
   describe "#three_vertically?" do
     it "returns true if 3 of the pieces are the same vertically" do
       @game.board = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
@@ -94,15 +52,6 @@ context "when playing the game" do
       expect(@game.three_vertically?).to be true
       @game.board = ["X", "X", "2", "X", "4", "O", "6", "O", "8"]
       expect(@game.three_vertically?).to be false
-    end
-  end
-
-
-  describe "#diagonals" do
-    it "return the diagoanls based on the board" do
-      diagonals = @game.diagonals
-      expect(diagonals[0]).to eq(["0","4","8"])
-      expect(diagonals[1]).to eq(["2","4","6"])
     end
   end
 
@@ -136,14 +85,6 @@ context "when playing the game" do
       expect(@game.tie?).to be true
       @game.board = ["O", "X", "O", "X", "O", "X", "X", "O", "8"]
       expect(@game.tie?).to be false
-    end
-  end
-
-  describe "available_corners" do
-    it "returns the availble corners" do
-      expect(@game.available_corners).to eq(["0", "2", "6", "8"])
-      @game.board[0] = ["X"]
-      expect(@game.available_corners).to eq(["2", "6", "8"])
     end
   end
 

@@ -1,13 +1,15 @@
 require './lib/message_printer'
 require 'pry'
 require 'player'
+require 'board'
 require 'bot'
 class Game
   attr_accessor :input, :output, :board
+
   def initialize
     self.input = $stdin
     self.output = $stdout
-    @board = (0..8).to_a.map { |n| n.to_s }
+    @board = Board.new
   end
 
   def get_players_piece
@@ -31,6 +33,10 @@ class Game
       MessagePrinter.board(@board)
     end
     puts "Game over"
+  end
+
+  def board
+    @board
   end
 
   def player
@@ -60,22 +66,6 @@ class Game
 
   def bots_piece
     @player.piece == 'X'? 'O' : 'X'
-  end
-
-  def rows
-    board.each_slice(3).to_a
-  end
-
-  def columns
-    rows[0].zip(rows[1], rows[2])
-  end
-
-  def diagonals
-    [[board[0], board[4], board[8]] , [board[2], board[4], board[6]]]
-  end
-
-  def available_corners
-    available_spaces.select { |space| space == "0" || space == "2" || space == "6" || space == "8"}
   end
 
   def get_human_spot
