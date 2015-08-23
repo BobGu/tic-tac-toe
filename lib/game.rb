@@ -1,8 +1,9 @@
 require './lib/message_printer'
 require 'pry'
-require 'player'
-require 'board'
-require 'bot'
+require './lib/player'
+require './lib/board'
+require './lib/bot'
+require './lib/board_evaluator'
 class Game
   attr_accessor :input, :output, :board
 
@@ -22,7 +23,7 @@ class Game
     assign_players_piece(get_players_piece)
     MessagePrinter.instructions(@player.piece)
     create_bot
-    MessagePrinter.board(@board)
+    MessagePrinter.board(@board.spaces)
     puts "Please select your spot."
     until won? || tie?
       MessagePrinter.players_turn
@@ -30,7 +31,7 @@ class Game
       if !won? && !tie?
         eval_board
       end
-      MessagePrinter.board(@board)
+      MessagePrinter.board(@board.spaces)
     end
     puts "Game over"
   end
@@ -72,8 +73,8 @@ class Game
     spot = nil
     until spot
       spot = gets.chomp.to_i
-      if valid_move?(spot)
-        @board[spot] = @player.piece
+      if board.valid_move?(spot)
+        board.spaces[spot] = @player.piece
       else
         MessagePrinter.invalid_move(spot)
         spot = nil
@@ -81,24 +82,16 @@ class Game
     end
   end
 
-  def valid_move?(spot)
-    @board.include?(spot.to_s) && @board[spot] != "X" && @board[spot] != "O"
-  end
-
-  def center_square_available?
-    @board.include?("4")
-  end
-
   def eval_board
     spot = nil
     until spot
-      if center_square_available?
-        @board[4] = @bot.piece
+      if board.center_square_available?
+        board.spaces[4] = @bot.piece
         spot = 4
       else
         spot = get_best_move
-        if valid_move?(spot)
-          @board[spot] = @bot.piece
+        if board.valid_move?(spot)
+          board.spaces[spot] = @bot.piece
         else
           spot = nil
         end
@@ -107,66 +100,44 @@ class Game
     MessagePrinter.computer_move(spot, @bot.piece)
   end
 
-  def available_spaces
-    board.reject { |space| space == "X" || space == "O" }
-  end
-
   def get_best_move
     best_move = nil
-    available_spaces.each do |as|
-      board[as.to_i] = @bot.piece
+    board.available_spaces.each do |as|
+      board.spaces[as.to_i] = @bot.piece
       if won?
+        binding.pry
         best_move = as.to_i
-        board[as.to_i] = as
+        board.spaces[as.to_i] = as
         return best_move
       else
-        board[as.to_i] = @player.piece
+        board.spaces[as.to_i] = @player.piece
         if won?
           best_move = as.to_i
-          board[as.to_i] = as
+          board.spaces[as.to_i] = as
           return best_move
         else
-          board[as.to_i] = as
+          board.spaces[as.to_i] = as
         end
       end
     end
     if best_move
       return best_move
     else
-      if available_corners.count > 0
-        n = available_corners.sample
+      if board.available_corners.count > 0
+        n = board.available_corners.sample
       else
-        n = available_spaces.sample
+        n = board.available_spaces.sample
       end
       return n.to_i
     end
   end
 
-  def three_across?
-    rows.any? do |row|
-      row.all? { |space| space == 'X' } || row.all? { |space| space == 'O' }
-    end
-  end
-
-  def three_vertically?
-    columns.any? do |column|
-      column.all? { |space| space == 'X' } || column.all? { |space| space == 'O' }
-    end
-  end
-
-  def three_diagonally?
-    diagonals.any? do |diagonal|
-      diagonal.all? { |space| space == 'X' } || diagonal.all? { |space| space == 'O' }
-    end
-  end
-
   def won?
-    three_across? || three_vertically? || three_diagonally?
+    BoardEvaluator.check_for_wins?(@board.possible_wins)
   end
 
   def tie?
-    board.all? { |s| s == "X" || s == "O" }
+    BoardEvaluator.tie?(board.spaces)
   end
-
 
 end

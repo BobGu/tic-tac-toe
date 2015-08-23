@@ -1,5 +1,5 @@
 require './lib/board'
-
+require 'pry'
 context "a tic tac toe board" do
   before(:each) { @board = Board.new }
 
@@ -61,11 +61,19 @@ context "a tic tac toe board" do
     end
   end
 
-  describe "available_corners" do
+  describe "#available_corners" do
     it "returns the availble corners" do
       expect(@board.available_corners).to eq(["0", "2", "6", "8"])
       @board.spaces[0] = ["X"]
       expect(@board.available_corners).to eq(["2", "6", "8"])
+    end
+  end
+
+  describe "#possible_wins" do
+    it "returns all sets of possible_wins" do
+      expect(@board.possible_wins).to eq([["0", "1", "2"], ["3", "4", "5"], ["6", "7", "8"],
+                                         ["0", "3", "6"], ["1", "4", "7"], ["2", "5", "8"],
+                                         ["0", "4", "8"], ["2", "4", "6"]])
     end
   end
 

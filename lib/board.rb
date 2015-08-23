@@ -33,6 +33,10 @@ class Board
     [[spaces[0], spaces[4], spaces[8]] , [spaces[2], spaces[4], spaces[6]]]
   end
 
+  def possible_wins
+    rows + columns + diagonals
+  end
+
   def available_corners
     available_spaces.select { |space| space == "0" || space == "2" || space == "6" || space == "8"}
   end
