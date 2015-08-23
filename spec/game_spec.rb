@@ -3,15 +3,33 @@ require_relative '../lib/game'
 # player start should be random
 
 context "when playing the game" do
-  before(:each) { @game = Game.new }
+  before(:each) do
+    @game = Game.new
+  end
+  describe "#assign_players_piece" do
+    it "assign_players_piece" do
+      @game.assign_players_piece('X')
+      expect(@game.player.piece).to eq('X')
+    end
+  end
+
+  describe "#bots_piece" do
+    it "returns the opposite piece of the humans" do
+      @game.assign_players_piece('X')
+      expect(@game.bots_piece).to eq('O')
+      @game.assign_players_piece('O')
+      expect(@game.bots_piece).to eq('X')
+    end
+  end
+
   describe "#valid_move?" do
-      it "returns true for valid moves and false for invalid" do
-        @game.board = ["0", "1", "2", "X", "4", "5", "6", "7", "O"]
-        expect(@game.valid_move?(0)).to be true
-        expect(@game.valid_move?(3)).to be false
-        expect(@game.valid_move?(8)).to be false
-        expect(@game.valid_move?("hello")).to be false
-      end
+    it "returns true for valid moves and false for invalid" do
+      @game.board = ["0", "1", "2", "X", "4", "5", "6", "7", "O"]
+      expect(@game.valid_move?(0)).to be true
+      expect(@game.valid_move?(3)).to be false
+      expect(@game.valid_move?(8)).to be false
+      expect(@game.valid_move?("hello")).to be false
+    end
   end
 
   describe "#available_spaces" do

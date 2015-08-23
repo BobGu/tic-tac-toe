@@ -1,7 +1,15 @@
 require 'colorize'
 class MessagePrinter
+  def self.which_piece
+    puts "Hi!  Would you like to be X's or O's\n\n\n"
+  end
+
   def self.welcome
     puts "Welcome to Tic Tac Toe!"
+  end
+
+  def self.invalid_piece(input)
+    puts "Hi you must either select the letter O or X! #{input} is an incorrect choice"
   end
 
   def self.board(board)

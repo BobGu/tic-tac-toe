@@ -1,5 +1,7 @@
 require './lib/message_printer'
 require 'pry'
+require 'player'
+require 'bot'
 class Game
   attr_accessor :input, :output, :board
   def initialize
@@ -8,6 +10,54 @@ class Game
     @board = (0..8).to_a.map { |n| n.to_s }
     @com = "X"
     @hum = "O"
+  end
+
+  def get_players_piece
+    input.gets.chomp.upcase
+  end
+
+  def start_game
+    MessagePrinter.welcome
+    MessagePrinter.which_piece
+    assign_players_piece(get_players_piece)
+    MessagePrinter.instructions(@player.piece)
+    create_bot
+    MessagePrinter.board(@board)
+    puts "Please select your spot."
+    until won? || tie?
+      MessagePrinter.players_turn
+      get_human_spot
+      if !won? && !tie?
+        eval_board
+      end
+      MessagePrinter.board(@board)
+    end
+    puts "Game over"
+  end
+
+  def player
+    @player
+  end
+
+  def create_bot
+    Bot.new(bots_piece)
+  end
+
+  def valid_piece?(input)
+    input == 'X' || input == 'O'
+  end
+
+  def assign_players_piece(input)
+    if valid_piece?(input)
+      @player = Player.new(input)
+    else
+      MessagePrinter.invalid_piece(input)
+      assign_players_piece(get_players_piece)
+    end
+  end
+
+  def bots_piece
+    @player.piece == 'X'? 'O' : 'X'
   end
 
   def rows
@@ -24,22 +74,6 @@ class Game
 
   def available_corners
     available_spaces.select { |space| space == "0" || space == "2" || space == "6" || space == "8"}
-  end
-
-  def start_game
-    MessagePrinter.welcome
-    MessagePrinter.instructions(@hum)
-    MessagePrinter.board(@board)
-    puts "Please select your spot."
-    until won? || tie?
-      MessagePrinter.players_turn
-      get_human_spot
-      if !won? && !tie?
-        eval_board
-      end
-      MessagePrinter.board(@board)
-    end
-    puts "Game over"
   end
 
   def get_human_spot
