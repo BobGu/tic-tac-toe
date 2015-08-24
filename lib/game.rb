@@ -25,11 +25,17 @@ class Game
     create_bot
     MessagePrinter.board(@board.spaces)
     puts "Please select your spot."
+    get_human_spot(human_move)
+    MessagePrinter.board(@board.spaces)
+    cm = computer_initial_move
+    MessagePrinter.computer_move(cm, @bot.piece)
+    MessagePrinter.board(@board.spaces)
     until won? || tie?
       MessagePrinter.players_turn
-      get_human_spot
+      get_human_spot(human_move)
       if !won? && !tie?
-        eval_board
+        cm = computer_move
+        MessagePrinter.computer_move(cm, @bot.piece)
       end
       MessagePrinter.board(@board.spaces)
     end
@@ -82,54 +88,27 @@ class Game
     end
   end
 
-  def eval_board
-    spot = nil
-    until spot
-      if board.center_square_available?
-        board.spaces[4] = @bot.piece
-        spot = 4
-      else
-        spot = get_best_move
-        if board.valid_move?(spot)
-          board.spaces[spot] = @bot.piece
-        else
-          spot = nil
-        end
-      end
-    end
-    MessagePrinter.computer_move(spot, @bot.piece)
+  def computer_initial_move
+    board.spaces[@bot.initial_move(board).to_i] = @bot.piece
   end
 
-  def get_best_move
-    best_move = nil
-    board.available_spaces.each do |as|
-      board.spaces[as.to_i] = @bot.piece
-      if won?
-        binding.pry
-        best_move = as.to_i
-        board.spaces[as.to_i] = as
-        return best_move
-      else
-        board.spaces[as.to_i] = @player.piece
-        if won?
-          best_move = as.to_i
-          board.spaces[as.to_i] = as
-          return best_move
-        else
-          board.spaces[as.to_i] = as
-        end
-      end
-    end
-    if best_move
-      return best_move
-    else
-      if board.available_corners.count > 0
-        n = board.available_corners.sample
-      else
-        n = board.available_spaces.sample
-      end
-      return n.to_i
-    end
+  def computer_winning_move
+    BoardEvaluator.find_winning_move(board.possible_wins, bot.piece)
+  end
+
+  def computer_blocking_move
+    BoardEvaluator.find_winning_move(board.possible_wins, player.piece)
+  end
+
+  def computers_best_move
+    return computer_winning_move if computer_winning_move
+    return computer_blocking_move if computer_blocking_move
+    return @board.available_corners.sample if @board.available_corner?
+    @board.available_spaces.sample
+  end
+
+  def computer_move
+    board.spaces[computers_best_move.to_i] = @bot.piece
   end
 
   def won?

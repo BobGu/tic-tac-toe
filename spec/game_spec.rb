@@ -23,8 +23,6 @@ context "when playing the game" do
     end
   end
 
-
-
   describe "#won?" do
     it "returns true or false if game is won" do
       @game.board.spaces = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
@@ -44,15 +42,6 @@ context "when playing the game" do
       expect(@game.tie?).to be true
       @game.board.spaces = ["O", "X", "O", "X", "O", "X", "X", "O", "8"]
       expect(@game.tie?).to be false
-    end
-  end
-
-  describe "#get_best_move" do
-    it "automatically returns a corner spot if center square is taken" do
-      @game.assign_players_piece('O')
-      @game.create_bot
-      @game.board.spaces[4] = 'O'
-      result = @game.get_best_move
     end
   end
 
