@@ -69,16 +69,16 @@ class Game
     @player.piece == 'X'? 'O' : 'X'
   end
 
-  def get_human_spot
-    spot = nil
-    until spot
-      spot = gets.chomp.to_i
-      if board.valid_move?(spot)
-        board.spaces[spot] = @player.piece
-      else
-        MessagePrinter.invalid_move(spot)
-        spot = nil
-      end
+  def human_move
+    input.gets.chomp.to_i
+  end
+
+  def get_human_spot(input)
+    if board.valid_move?(input)
+      board.spaces[input] = @player.piece
+    else
+      output.puts(MessagePrinter.invalid_move(input))
+      get_human_spot(human_move)
     end
   end
 

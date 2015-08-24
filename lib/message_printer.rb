@@ -21,7 +21,7 @@ class MessagePrinter
   end
 
   def self.invalid_move(spot)
-    puts "Placing a piece in the #{spot} is not a valid move"
+    "Placing a piece in the #{spot} is not a valid move"
   end
 
   def self.instructions(hum)

@@ -64,4 +64,24 @@ context "when playing the game" do
     end
   end
 
+  describe "#get_human_spot" do
+    it "takes a human spot and places it on the board" do
+      @game.assign_players_piece('O')
+      @game.get_human_spot(1)
+      expect(@game.board.spaces).not_to include('1')
+    end
+
+    it "asks player again for a spot on invalid input" do
+      @input  = StringIO.new("1\n")
+      @output = StringIO.new
+      @game.input = @input
+      @game.output = @output
+      @game.assign_players_piece('X')
+      @game.get_human_spot(10)
+      expect(@output.string).to eq("Placing a piece in the 10 is not a valid move\n")
+      expect(@game.board.spaces).not_to include('1')
+    end
+  end
+
+
 end
