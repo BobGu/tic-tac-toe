@@ -23,14 +23,7 @@ context "when playing the game" do
     end
   end
 
-  describe "#eval_board" do
-    it "computer plays center square if available" do
-      @game.assign_players_piece('O')
-      @game.create_bot
-      @game.eval_board
-      expect(@game.board.center_square_available?).to be false
-    end
-  end
+
 
   describe "#won?" do
     it "returns true or false if game is won" do
@@ -60,7 +53,6 @@ context "when playing the game" do
       @game.create_bot
       @game.board.spaces[4] = 'O'
       result = @game.get_best_move
-      expect(["0", "2", "6", "8"]).to include(result.to_s)
     end
   end
 
@@ -72,14 +64,14 @@ context "when playing the game" do
     end
 
     it "asks player again for a spot on invalid input" do
+      @game.assign_players_piece('X')
       @input  = StringIO.new("1\n")
       @output = StringIO.new
       @game.input = @input
       @game.output = @output
-      @game.assign_players_piece('X')
       @game.get_human_spot(10)
       expect(@output.string).to eq("Placing a piece in the 10 is not a valid move\n")
-      expect(@game.board.spaces).not_to include('1')
+      expect(@game.board.spaces[1]).to eq('X')
     end
   end
 

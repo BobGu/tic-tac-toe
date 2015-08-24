@@ -41,4 +41,8 @@ class Board
     available_spaces.select { |space| space == "0" || space == "2" || space == "6" || space == "8"}
   end
 
+  def available_corner?
+    available_corners.count > 0
+  end
+
 end
