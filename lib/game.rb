@@ -17,29 +17,40 @@ class Game
     input.gets.chomp.upcase
   end
 
-  def start_game
-    MessagePrinter.welcome
-    MessagePrinter.which_piece
+  def game_intro
+    output.puts(MessagePrinter.welcome)
+    output.puts(MessagePrinter.which_piece)
     assign_players_piece(get_players_piece)
-    MessagePrinter.instructions(@player.piece)
+    output.puts(MessagePrinter.instructions)
+    output.puts(MessagePrinter.example_board)
     create_bot
-    MessagePrinter.board(@board.spaces)
-    puts "Please select your spot."
+  end
+
+  def initial_moves
+    output.puts(MessagePrinter.board(@board.spaces))
+    output.puts(MessagePrinter.player_piece(@player.piece))
+    output.puts(MessagePrinter.humans_turn)
     get_human_spot(human_move)
-    MessagePrinter.board(@board.spaces)
+    output.puts(MessagePrinter.board(@board.spaces))
     cm = computer_initial_move
-    MessagePrinter.computer_move(cm, @bot.piece)
-    MessagePrinter.board(@board.spaces)
+    output.puts(MessagePrinter.computer_move(cm, @bot.piece))
+    output.puts(MessagePrinter.board(@board.spaces))
+  end
+
+  def start_game
+    game_intro
+    initial_moves
     until won? || tie?
-      MessagePrinter.players_turn
+      output.puts(MessagePrinter.players_turn)
       get_human_spot(human_move)
       if !won? && !tie?
         cm = computer_move
-        MessagePrinter.computer_move(cm, @bot.piece)
+        output.puts(MessagePrinter.computer_move(cm, @bot.piece))
       end
-      MessagePrinter.board(@board.spaces)
+      output.puts(MessagePrinter.board(@board.spaces))
     end
-    puts "Game over"
+    output.puts(MessagePrinter.tie_game) if tie?
+    # output.puts(MessagePrinter.) if won?
   end
 
   def board
@@ -66,7 +77,7 @@ class Game
     if valid_piece?(input)
       @player = Player.new(input)
     else
-      MessagePrinter.invalid_piece(input)
+      output.puts(MessagePrinter.invalid_piece(input))
       assign_players_piece(get_players_piece)
     end
   end
@@ -76,12 +87,12 @@ class Game
   end
 
   def human_move
-    input.gets.chomp.to_i
+    input.gets.chomp
   end
 
   def get_human_spot(input)
     if board.valid_move?(input)
-      board.spaces[input] = @player.piece
+      board.spaces[input.to_i] = @player.piece
     else
       output.puts(MessagePrinter.invalid_move(input))
       get_human_spot(human_move)
@@ -89,7 +100,9 @@ class Game
   end
 
   def computer_initial_move
-    board.spaces[@bot.initial_move(board).to_i] = @bot.piece
+    cm = @bot.initial_move(board).to_i
+    board.spaces[cm] = @bot.piece
+    cm
   end
 
   def computer_winning_move
@@ -108,7 +121,9 @@ class Game
   end
 
   def computer_move
-    board.spaces[computers_best_move.to_i] = @bot.piece
+    cm = computers_best_move.to_i
+    board.spaces[cm] = @bot.piece
+    cm
   end
 
   def won?
@@ -120,3 +135,5 @@ class Game
   end
 
 end
+game = Game.new
+game.start_game

@@ -1,48 +1,55 @@
 require 'colorize'
 class MessagePrinter
   def self.which_piece
-    puts "Hi!  Would you like to be X's or O's\n\n\n"
+    "Hi!  Would you like to be X's or O's\n".colorize(:green)
   end
 
   def self.welcome
-    puts "Welcome to Tic Tac Toe!"
+    "Welcome to Tic Tac Toe!".colorize(:green)
+  end
+
+  def self.player_piece(piece)
+    "You are the letter #{piece}".colorize(:green)
   end
 
   def self.invalid_piece(input)
-    puts "Hi you must either select the letter O or X! #{input} is an incorrect choice"
+    "Hi you must either select the letter O or X! #{input} is an incorrect choice".colorize(:red)
   end
 
   def self.board(board)
-    uncolored_board = "     |     |    \n #{board[0]}   |  #{board[1]}  |  #{board[2]}\n_____|_____|_____\n     |     |    \n #{board[3]}   |  #{board[4]}  |  #{board[5]}\n_____|_____|_____\n     |     |\n #{board[6]}   |  #{board[7]}  |  #{board[8]}\n_____|_____|_____"
+    uncolored_board = "     |     |    \n #{board[0]}   |  #{board[1]}  |  #{board[2]}\n_____|_____|_____\n     |     |    \n #{board[3]}   |  #{board[4]}  |  #{board[5]}\n_____|_____|_____\n     |     |\n #{board[6]}   |  #{board[7]}  |  #{board[8]}\n_____|_____|_____\n\n"
     colored_board = uncolored_board.gsub('X', 'X'.colorize(:red))
     colored_board = colored_board.gsub('O', 'O'.colorize(:light_blue))
-    puts colored_board
-    # puts "|_#{board[0]}_|_#{board[1]}_|_#{board[2]}_|\n|_#{board[3]}_|_#{board[4]}_|_#{board[5]}_|\n|_#{board[6]}_|_#{board[7]}_|_#{board[8]}_|\n"
+    colored_board
+  end
+
+  def self.humans_turn
+    "It's your turn, please pick an available space".colorize(:green)
   end
 
   def self.invalid_move(spot)
-    "Placing a piece in the #{spot} is not a valid move"
+    "Placing a piece in the #{spot} is not a valid move".colorize(:red)
   end
 
-  def self.instructions(hum)
+  def self.instructions
+    "Hi!  To place a piece on the board please enter the number of the space you want to place your piece. For instance if I was the letter O and typed in the number 4 the board would look like this.".colorize(:yellow)
+  end
+
+  def self.example_board
     blue_o = "O".colorize(:light_blue)
-    puts "Hi!  To place a piece on the board please enter
-    the number of the space you want to place your piece.
-    For instance typing in the number 4 places a piece in the center space
-    The board would look like this if you are the letter O and placed it in the center space
-     |     |    \n 0   |  1  |  2\n_____|_____|_____\n     |     |    \n 3   |  #{blue_o}  |  5\n_____|_____|_____\n     |     |\n 6   |  7  |  8\n_____|_____|_____\n\n\n"
-
-
-
-    puts "You are the letter #{hum}"
+    "     |     |    \n 0   |  1  |  2\n_____|_____|_____\n     |     |    \n 3   |  #{blue_o}  |  5\n_____|_____|_____\n     |     |\n 6   |  7  |  8\n_____|_____|_____\n\n\n"
   end
 
-  def self.computer_move(spot, com)
-    puts "The computer placed a #{com} in the #{spot}"
+  def self.computer_move(spot, piece)
+    "\nThe computer placed a #{piece} in the #{spot}\n".colorize(:yellow)
   end
 
   def self.players_turn
-    "It's your turn please pick an available space"
+    "It's your turn please pick an available space".colorize(:green)
+  end
+
+  def self.tie_game
+    "'A strange game.  The only winning move is not to play.' - War Games".colorize(:yellow)
   end
 
 end

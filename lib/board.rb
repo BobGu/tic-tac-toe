@@ -18,7 +18,7 @@ class Board
   end
 
   def valid_move?(spot)
-    spaces.include?(spot.to_s) && spaces[spot] != "X" && spaces[spot] != "O"
+    spaces.include?(spot) && spaces[spot.to_i] != "X" && spaces[spot.to_i] != "O"
   end
 
   def rows
