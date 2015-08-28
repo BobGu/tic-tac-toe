@@ -7,19 +7,22 @@ context "when playing the game" do
     @game = Game.new
   end
 
-  describe "#assign_players_piece" do
-    it "assign_players_piece" do
-      @game.assign_players_piece('X')
-      expect(@game.player.piece).to eq('X')
+  describe "#assign_human_piece" do
+    it "assigns a humans piece" do
+      @game.assign_human_name("John")
+      @game.assign_human_piece('X')
+      expect(@game.human.piece).to eq('X')
     end
   end
 
-  describe "#bots_piece" do
+  describe "#opposite_piece" do
     it "returns the opposite piece of the humans" do
-      @game.assign_players_piece('X')
-      expect(@game.bots_piece).to eq('O')
-      @game.assign_players_piece('O')
-      expect(@game.bots_piece).to eq('X')
+      @game.assign_human_name("John")
+      @game.assign_human_piece('X')
+      @game.create_bot
+      expect(@game.opposite_piece).to eq('O')
+      @game.human.piece = 'O'
+      expect(@game.opposite_piece).to eq('X')
     end
   end
 
@@ -47,20 +50,21 @@ context "when playing the game" do
 
   describe "#get_human_spot" do
     it "takes a human spot and places it on the board" do
-      @game.assign_players_piece('O')
-      @game.get_human_spot(1)
+      @game.assign_human_name('John')
+      @game.assign_human_piece('O')
+      @game.get_human_spot("1")
       expect(@game.board.spaces).not_to include('1')
     end
 
     it "asks player again for a spot on invalid input" do
-      @game.assign_players_piece('X')
       @input  = StringIO.new("1\n")
       @output = StringIO.new
       @game.input = @input
       @game.output = @output
-      @game.get_human_spot(10)
-      expect(@output.string).to eq("Placing a piece in the 10 is not a valid move\n")
-      expect(@game.board.spaces[1]).to eq('X')
+      @game.assign_human_name("John")
+      @game.assign_human_piece("X")
+      @game.get_human_spot("10")
+      expect(@game.board.spaces[1]).to eq("X")
     end
   end
 

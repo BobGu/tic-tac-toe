@@ -1,19 +1,39 @@
 require 'colorize'
 class MessagePrinter
   def self.which_piece
-    "Hi!  Would you like to be X's or O's\n".colorize(:green)
+    "Would you like to be X's or O's".colorize(:green)
   end
 
   def self.welcome
     "Welcome to Tic Tac Toe!".colorize(:green)
   end
 
+  def self.which_game
+    "Choose which game type you would like to play.  Type in (hh) for human v human (hc) human vs computer or (cc) computer vs computer".colorize(:green)
+  end
+
   def self.player_piece(piece)
     "You are the letter #{piece}".colorize(:green)
   end
 
+  def self.ask_for_name
+    "\nHi what is your name?".colorize(:green)
+  end
+
+  def self.invalid_game_type(input)
+    "#{input} is not a valid game type".colorize(:red)
+  end
+
   def self.invalid_piece(input)
     "Hi you must either select the letter O or X! #{input} is an incorrect choice".colorize(:red)
+  end
+
+  def self.player_confirmation(name, piece)
+    "\nHey #{name} you are the #{piece}'s".colorize(:yellow)
+  end
+
+  def self.ask_for_turn_order(name)
+    "Type in 1 if you would like #{name} to go first and 2 for #{name} to go second"
   end
 
   def self.board(board)
@@ -23,8 +43,8 @@ class MessagePrinter
     colored_board
   end
 
-  def self.humans_turn
-    "It's your turn, please pick an available space".colorize(:green)
+  def self.humans_turn(name)
+    "It's your turn #{name} please pick an available space".colorize(:green)
   end
 
   def self.invalid_move(spot)
@@ -44,8 +64,8 @@ class MessagePrinter
     "\nThe computer placed a #{piece} in the #{spot}\n".colorize(:yellow)
   end
 
-  def self.players_turn
-    "It's your turn please pick an available space".colorize(:green)
+  def self.players_turn(name)
+    "It's #{name}'s turn please pick an available space".colorize(:green)
   end
 
   def self.tie_game

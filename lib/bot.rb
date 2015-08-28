@@ -1,14 +1,24 @@
 require 'pry'
 class Bot
-  def initialize(piece)
-    @piece = piece
+  attr_accessor :piece
+
+  def initialize
+    @name = random_name
   end
 
   def piece
     @piece
   end
 
-  def initial_move(board)
+  def name
+    @name
+  end
+
+  def random_name
+    ["Johnny5", "T-1000", "Siri", "Skynet", "Al Gore", "iRobot"].sample
+  end
+
+  def next_best_move(board)
     return "4" if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
     board.available_spaces.sample

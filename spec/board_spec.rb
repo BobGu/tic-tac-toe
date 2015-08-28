@@ -28,9 +28,9 @@ context "a tic tac toe board" do
   describe "#valid_move?" do
     it "returns true for valid moves and false for invalid" do
       @board.spaces = ["0", "1", "2", "X", "4", "5", "6", "7", "O"]
-      expect(@board.valid_move?(0)).to be true
-      expect(@board.valid_move?(3)).to be false
-      expect(@board.valid_move?(8)).to be false
+      expect(@board.valid_move?("0")).to be true
+      expect(@board.valid_move?("3")).to be false
+      expect(@board.valid_move?("8")).to be false
       expect(@board.valid_move?("hello")).to be false
     end
   end
