@@ -1,7 +1,7 @@
 require 'colorize'
 class MessagePrinter
-  def self.which_piece
-    "Would you like to be X's or O's".colorize(:green)
+  def self.which_piece(name)
+    "Would you like #{name} to be X's or O's".colorize(:green)
   end
 
   def self.welcome

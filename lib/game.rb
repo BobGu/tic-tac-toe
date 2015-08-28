@@ -37,26 +37,25 @@ class Game
   def create_bot
     @bot = Bot.new
     players << @bot
-    @bot.piece = opposite_piece
   end
 
   def valid_piece?(input)
     input == 'X' || input == 'O'
   end
 
-  def assign_human_piece(input)
-    if valid_piece?(input.upcase)
-      human.piece = input.upcase
-    else
-      output.puts(MessagePrinter.invalid_piece(input))
-      assign_human_piece(get_input)
-    end
-  end
-
   def valid_game_type?(input)
     input == "HH" ||
     input == "HC" ||
     input == "CC"
+  end
+
+  def assign_player_piece(input)
+    if valid_piece?(input.upcase)
+      @players[-1].piece = input.upcase
+    else
+      output.puts(MessagePrinter.invalid_piece(input))
+      assign_player_piece(get_input)
+    end
   end
 
   def assign_game_type(input)
@@ -87,11 +86,15 @@ class Game
     assign_game_type(get_input)
   end
 
+  def get_player_piece
+    output.puts(MessagePrinter.which_piece(@players[-1].name))
+    assign_player_piece(get_input)
+  end
+
   def get_player_info
     output.puts(MessagePrinter.ask_for_name)
     assign_human_name(get_input)
-    output.puts(MessagePrinter.which_piece)
-    assign_human_piece(get_input)
+    get_player_piece
   end
 
   def game_instructions
@@ -105,7 +108,7 @@ class Game
   end
 
   def bot_or_human(player)
-    player.class == Bot ? computer_move : get_human_spot(get_input, player)
+    player.class == Bot ? computer_move(player.piece) : get_human_spot(get_input, player)
   end
 
   def valid_turn_input?(input)
@@ -143,6 +146,7 @@ class Game
     get_player_info
     output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
     create_bot
+    assign_player_piece(opposite_piece(@human.piece))
     output.puts(MessagePrinter.ask_for_turn_order(@human.name))
     assign_turn_order(get_input)
     game_instructions
@@ -155,7 +159,7 @@ class Game
     output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
     output.puts(MessagePrinter.ask_for_name)
     assign_human_name(get_input)
-    assign_human_piece(opposite_piece)
+    assign_player_piece(opposite_piece(players[-2].piece))
     output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
     output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
     assign_turn_order(get_input)
@@ -163,8 +167,21 @@ class Game
     moves
   end
 
-  def opposite_piece
-    players[-2].piece == 'X' ? 'O' : 'X'
+  def computer_vs_computer
+    create_bot
+    get_player_piece
+    output.puts(MessagePrinter.player_confirmation(@bot.name, @bot.piece))
+    create_bot
+    assign_player_piece(opposite_piece(players[-2].piece))
+    output.puts(MessagePrinter.player_confirmation(@bot.name, @bot.piece))
+    output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+    assign_turn_order(get_input)
+    moves
+    output.puts(MessagePrinter.tie_game) if tie?
+  end
+
+  def opposite_piece(piece)
+    piece == 'X' ? 'O' : 'X'
   end
 
   def get_human_spot(input, player=@human)
@@ -182,25 +199,26 @@ class Game
     cm
   end
 
-  def computer_winning_move
-    BoardEvaluator.find_winning_move(board.possible_wins, bot.piece)
+  def computer_winning_move(piece)
+    BoardEvaluator.find_winning_move(board.possible_wins, piece)
   end
 
-  def computer_blocking_move
-    BoardEvaluator.find_winning_move(board.possible_wins, human.piece)
+  def computer_blocking_move(piece)
+    BoardEvaluator.find_winning_move(board.possible_wins, opposite_piece(piece))
   end
 
-  def computers_best_move
-    return computer_winning_move if computer_winning_move
-    return computer_blocking_move if computer_blocking_move
+  def computers_best_move(piece)
+    return computer_winning_move(piece) if computer_winning_move(piece)
+    return computer_blocking_move(piece) if computer_blocking_move(piece)
     return board.spaces[4] if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
     board.available_spaces.sample
   end
 
-  def computer_move
-    cm = computers_best_move.to_i
-    board.spaces[cm] = @bot.piece
+  def computer_move(piece)
+    sleep(2)
+    cm = computers_best_move(piece).to_i
+    board.spaces[cm] = piece
   end
 
   def game_over?

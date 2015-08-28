@@ -7,10 +7,10 @@ context "when playing the game" do
     @game = Game.new
   end
 
-  describe "#assign_human_piece" do
+  describe "#assign_player_piece" do
     it "assigns a humans piece" do
       @game.assign_human_name("John")
-      @game.assign_human_piece('X')
+      @game.assign_player_piece('X')
       expect(@game.human.piece).to eq('X')
     end
   end
@@ -18,11 +18,11 @@ context "when playing the game" do
   describe "#opposite_piece" do
     it "returns the opposite piece of the humans" do
       @game.assign_human_name("John")
-      @game.assign_human_piece('X')
+      @game.assign_player_piece('X')
       @game.create_bot
-      expect(@game.opposite_piece).to eq('O')
+      expect(@game.opposite_piece(@game.human.piece)).to eq('O')
       @game.human.piece = 'O'
-      expect(@game.opposite_piece).to eq('X')
+      expect(@game.opposite_piece(@game.human.piece)).to eq('X')
     end
   end
 
@@ -51,7 +51,7 @@ context "when playing the game" do
   describe "#get_human_spot" do
     it "takes a human spot and places it on the board" do
       @game.assign_human_name('John')
-      @game.assign_human_piece('O')
+      @game.assign_player_piece('O')
       @game.get_human_spot("1")
       expect(@game.board.spaces).not_to include('1')
     end
@@ -62,9 +62,25 @@ context "when playing the game" do
       @game.input = @input
       @game.output = @output
       @game.assign_human_name("John")
-      @game.assign_human_piece("X")
+      @game.assign_player_piece("X")
       @game.get_human_spot("10")
       expect(@game.board.spaces[1]).to eq("X")
+    end
+  end
+
+  describe "#moves" do
+    it "always ends up in a tie in a computer vs computer game" do
+      @output = StringIO.new
+      @game.output = @output
+      @game.create_bot
+      @game.assign_player_piece('X')
+      @game.create_bot
+      @game.assign_player_piece(@game.opposite_piece(@game.players[-2].piece))
+      @game.assign_turn_order('1')
+      100.times do
+        @game.moves
+        expect(@game.tie?).to eq true
+      end
     end
   end
 
