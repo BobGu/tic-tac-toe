@@ -5,7 +5,14 @@ require './lib/board'
 require './lib/bot'
 require './lib/board_evaluator'
 class Game
-  attr_accessor :input, :output, :board, :players, :first_player, :second_player
+  attr_accessor :input,
+                :output,
+                :board,
+                :human,
+                :bot,
+                :players,
+                :first_player,
+                :second_player
 
   def initialize
     self.input = $stdin
@@ -18,25 +25,19 @@ class Game
     input.gets.chomp
   end
 
-  def board
-    @board
-  end
-
-  def human
-    @human
-  end
-
-  def bot
-    @bot
-  end
-
-  def players
-    @players
-  end
-
   def create_bot
     @bot = Bot.new
-    players << @bot
+    if !same_bot_name?(@bot)
+      players << @bot
+    else
+      create_bot
+    end
+  end
+
+  def same_bot_name?(bot)
+    if players[-1]
+      bot.name == players[-1].name
+    end
   end
 
   def valid_piece?(input)
@@ -69,9 +70,6 @@ class Game
       computer_vs_computer
     elsif input == "HH"
       human_vs_human
-    else
-      # error message saying it's not a valid game
-      assign_game_type(get_input)
     end
   end
 
@@ -140,6 +138,7 @@ class Game
         output.puts(MessagePrinter.board(board.spaces))
       end
     end
+    output.puts(MessagePrinter.tie_game) if tie?
   end
 
   def human_vs_computer
@@ -151,7 +150,6 @@ class Game
     assign_turn_order(get_input)
     game_instructions
     moves
-    output.puts(MessagePrinter.tie_game) if tie?
   end
 
   def human_vs_human
@@ -177,7 +175,6 @@ class Game
     output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
     assign_turn_order(get_input)
     moves
-    output.puts(MessagePrinter.tie_game) if tie?
   end
 
   def opposite_piece(piece)

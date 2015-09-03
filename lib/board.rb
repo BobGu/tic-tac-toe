@@ -5,10 +5,6 @@ class Board
     @spaces = ("0".."8").to_a
   end
 
-  def spaces
-    @spaces
-  end
-
   def available_spaces
     spaces.reject { |space| space == "X" || space == "O" }
   end

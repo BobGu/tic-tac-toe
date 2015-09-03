@@ -1,17 +1,9 @@
 require 'pry'
 class Bot
-  attr_accessor :piece
+  attr_accessor :piece, :name
 
   def initialize
     @name = random_name
-  end
-
-  def piece
-    @piece
-  end
-
-  def name
-    @name
   end
 
   def random_name
