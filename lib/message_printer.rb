@@ -28,6 +28,10 @@ class MessagePrinter
     "Hi you must either select the letter O or X! #{input} is an incorrect choice".colorize(:red)
   end
 
+  def self.invalid_turn(input)
+    "#{input} is not a valid turn order"
+  end
+
   def self.player_confirmation(name, piece)
     "\nHey #{name} you are the #{piece}'s".colorize(:yellow)
   end

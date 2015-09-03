@@ -52,7 +52,7 @@ class Game
 
   def assign_player_piece(input)
     if valid_piece?(input.upcase)
-      @players[-1].piece = input.upcase
+      players[-1].piece = input.upcase
     else
       output.puts(MessagePrinter.invalid_piece(input))
       assign_player_piece(get_input)
@@ -85,7 +85,7 @@ class Game
   end
 
   def get_player_piece
-    output.puts(MessagePrinter.which_piece(@players[-1].name))
+    output.puts(MessagePrinter.which_piece(players[-1].name))
     assign_player_piece(get_input)
   end
 
@@ -123,18 +123,20 @@ class Game
         @second_player = players[-2]
       end
     else
+      output.puts(MessagePrinter.invalid_turn(input))
+      output.puts(MessagePrinter.ask_for_turn_order(players[-1].name))
       assign_turn_order(get_input)
     end
   end
 
   def moves
     until game_over?
-      output.puts(MessagePrinter.players_turn(@first_player.name))
-      bot_or_human(@first_player)
+      output.puts(MessagePrinter.players_turn(first_player.name))
+      bot_or_human(first_player)
       output.puts(MessagePrinter.board(board.spaces))
       if !game_over?
-        output.puts(MessagePrinter.players_turn(@second_player.name))
-        bot_or_human(@second_player)
+        output.puts(MessagePrinter.players_turn(second_player.name))
+        bot_or_human(second_player)
         output.puts(MessagePrinter.board(board.spaces))
       end
     end
@@ -143,10 +145,10 @@ class Game
 
   def human_vs_computer
     get_player_info
-    output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
+    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
     create_bot
-    assign_player_piece(opposite_piece(@human.piece))
-    output.puts(MessagePrinter.ask_for_turn_order(@human.name))
+    assign_player_piece(opposite_piece(human.piece))
+    output.puts(MessagePrinter.ask_for_turn_order(human.name))
     assign_turn_order(get_input)
     game_instructions
     moves
@@ -154,11 +156,11 @@ class Game
 
   def human_vs_human
     get_player_info
-    output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
+    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
     output.puts(MessagePrinter.ask_for_name)
     assign_human_name(get_input)
     assign_player_piece(opposite_piece(players[-2].piece))
-    output.puts(MessagePrinter.player_confirmation(@human.name, @human.piece))
+    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
     output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
     assign_turn_order(get_input)
     game_instructions
@@ -168,10 +170,10 @@ class Game
   def computer_vs_computer
     create_bot
     get_player_piece
-    output.puts(MessagePrinter.player_confirmation(@bot.name, @bot.piece))
+    output.puts(MessagePrinter.player_confirmation(bot.name, bot.piece))
     create_bot
     assign_player_piece(opposite_piece(players[-2].piece))
-    output.puts(MessagePrinter.player_confirmation(@bot.name, @bot.piece))
+    output.puts(MessagePrinter.player_confirmation(bot.name, bot.piece))
     output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
     assign_turn_order(get_input)
     moves
@@ -181,7 +183,7 @@ class Game
     piece == 'X' ? 'O' : 'X'
   end
 
-  def get_human_spot(input, player=@human)
+  def get_human_spot(input, player= human)
     if board.valid_move?(input)
       board.spaces[input.to_i] = player.piece
     else
@@ -191,8 +193,8 @@ class Game
   end
 
   def computer_next_best_move
-    cm = @bot.next_best_move(board).to_i
-    board.spaces[cm] = @bot.piece
+    cm = bot.next_best_move(board).to_i
+    board.spaces[cm] = bot.piece
     cm
   end
 
@@ -231,3 +233,4 @@ class Game
   end
 
 end
+Game.new.start_game
