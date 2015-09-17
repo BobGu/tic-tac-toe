@@ -1,9 +1,9 @@
-require './lib/message_printer'
+require_relative '../lib/message_printer'
 require 'pry'
-require './lib/player'
-require './lib/board'
-require './lib/bot'
-require './lib/board_evaluator'
+require_relative '../lib/player'
+require_relative '../lib/board'
+require_relative '../lib/bot'
+require_relative '../lib/board_evaluator'
 class Game
   attr_accessor :input,
                 :output,
@@ -145,7 +145,7 @@ class Game
       end
     end
     output.puts(MessagePrinter.tie_game) if tie?
-    MessagePrinter.play_again
+    output.puts(MessagePrinter.play_again)
     if play_again?(get_input)
       @board = Board.new
       output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
@@ -228,7 +228,7 @@ class Game
   end
 
   def computer_move(piece)
-    sleep(0.5)
+    sleep(0.3)
     cm = computers_best_move(piece).to_i
     board.spaces[cm] = piece
   end
@@ -246,4 +246,3 @@ class Game
   end
 
 end
-Game.new.start_game
