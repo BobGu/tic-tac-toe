@@ -215,7 +215,7 @@ class Game
   end
 
   def computer_move(piece)
-    sleep(2)
+    sleep(0.5)
     cm = computers_best_move(piece).to_i
     board.spaces[cm] = piece
   end
