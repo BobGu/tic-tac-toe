@@ -1,4 +1,4 @@
-require './lib/player'
+require_relative '../lib/player'
 context "a human player playing the game" do
   describe "#piece" do
     it "knows which piece it is" do

@@ -1,5 +1,5 @@
-require './lib/board'
-require 'pry'
+require_relative '../lib/board'
+
 context "a tic tac toe board" do
   before(:each) { @board = Board.new }
 

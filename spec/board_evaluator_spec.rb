@@ -1,4 +1,4 @@
-require './lib/board_evaluator'
+require_relative '../lib/board_evaluator'
 
 context "evaluates a board" do
   describe ".three_pieces_in_a_row?" do

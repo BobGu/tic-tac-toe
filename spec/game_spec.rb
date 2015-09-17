@@ -1,6 +1,4 @@
 require_relative '../lib/game'
-# additional features
-# player start should be random
 
 context "when playing the game" do
   before(:each) do
@@ -78,6 +76,8 @@ context "when playing the game" do
       @game.assign_player_piece(@game.opposite_piece(@game.players[-2].piece))
       @game.assign_turn_order('1')
       100.times do
+        @input = StringIO.new('n')
+        @game.input = @input
         @game.moves
         expect(@game.tie?).to eq true
       end
