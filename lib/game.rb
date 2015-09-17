@@ -16,7 +16,6 @@ class Game
 
   def initialize
     self.input = $stdin
-    self.output = $stdout
     @board = Board.new
     @players ||= []
   end
@@ -58,7 +57,7 @@ class Game
     if valid_piece?(input.upcase)
       players[-1].piece = input.upcase
     else
-      output.puts(MessagePrinter.invalid_piece(input))
+      MessagePrinter.invalid_piece(input)
       assign_player_piece(get_input)
     end
   end
@@ -66,7 +65,7 @@ class Game
   def assign_game_type(input)
     input = input.upcase
     if !valid_game_type?(input)
-      output.puts(MessagePrinter.invalid_game_type(input.upcase))
+      MessagePrinter.invalid_game_type(input.upcase)
       assign_game_type(get_input)
     elsif input == "HC"
       human_vs_computer
@@ -83,26 +82,26 @@ class Game
   end
 
   def game_intro
-    output.puts(MessagePrinter.welcome)
-    output.puts(MessagePrinter.which_game)
+    MessagePrinter.welcome
+    MessagePrinter.which_game
     assign_game_type(get_input)
   end
 
   def get_player_piece
-    output.puts(MessagePrinter.which_piece(players[-1].name))
+    MessagePrinter.which_piece(players[-1].name)
     assign_player_piece(get_input)
   end
 
   def get_player_info
-    output.puts(MessagePrinter.ask_for_name)
+    MessagePrinter.ask_for_name
     assign_human_name(get_input)
     get_player_piece
   end
 
   def game_instructions
-    output.puts(MessagePrinter.instructions)
-    output.puts(MessagePrinter.example_board)
-    output.puts(MessagePrinter.board(board.spaces))
+    MessagePrinter.instructions
+    MessagePrinter.example_board
+    MessagePrinter.board(board.spaces)
   end
 
   def start_game
@@ -127,54 +126,54 @@ class Game
         @second_player = players[-2]
       end
     else
-      output.puts(MessagePrinter.invalid_turn(input))
-      output.puts(MessagePrinter.ask_for_turn_order(players[-1].name))
+      MessagePrinter.invalid_turn(input)
+      MessagePrinter.ask_for_turn_order(players[-1].name)
       assign_turn_order(get_input)
     end
   end
 
   def moves
     until game_over?
-      output.puts(MessagePrinter.players_turn(first_player.name))
+      MessagePrinter.players_turn(first_player.name)
       bot_or_human(first_player)
-      output.puts(MessagePrinter.board(board.spaces))
+      MessagePrinter.board(board.spaces)
       if !game_over?
-        output.puts(MessagePrinter.players_turn(second_player.name))
+        MessagePrinter.players_turn(second_player.name)
         bot_or_human(second_player)
-        output.puts(MessagePrinter.board(board.spaces))
+        MessagePrinter.board(board.spaces)
       end
     end
-    output.puts(MessagePrinter.tie_game) if tie?
-    output.puts(MessagePrinter.play_again)
+    MessagePrinter.tie_game if tie?
+    MessagePrinter.play_again
     if play_again?(get_input)
       @board = Board.new
-      output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+      MessagePrinter.ask_for_turn_order(players[-2].name)
       assign_turn_order(get_input)
-      output.puts(MessagePrinter.board(board.spaces))
+      MessagePrinter.board(board.spaces)
       moves
     end
   end
 
   def human_vs_computer
     get_player_info
-    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
+    MessagePrinter.player_confirmation(human.name, human.piece)
     create_bot
     assign_player_piece(opposite_piece(human.piece))
-    output.puts(MessagePrinter.ask_for_turn_order(human.name))
+    MessagePrinter.ask_for_turn_order(human.name)
     assign_turn_order(get_input)
-    output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+    MessagePrinter.ask_for_turn_order(players[-2].name)
     game_instructions
     moves
   end
 
   def human_vs_human
     get_player_info
-    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
-    output.puts(MessagePrinter.ask_for_name)
+    MessagePrinter.player_confirmation(human.name, human.piece)
+    MessagePrinter.ask_for_name
     assign_human_name(get_input)
     assign_player_piece(opposite_piece(players[-2].piece))
-    output.puts(MessagePrinter.player_confirmation(human.name, human.piece))
-    output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+    MessagePrinter.player_confirmation(human.name, human.piece)
+    MessagePrinter.ask_for_turn_order(players[-2].name)
     assign_turn_order(get_input)
     game_instructions
     moves
@@ -183,11 +182,11 @@ class Game
   def computer_vs_computer
     create_bot
     get_player_piece
-    output.puts(MessagePrinter.player_confirmation(bot.name, bot.piece))
+    MessagePrinter.player_confirmation(bot.name, bot.piece)
     create_bot
     assign_player_piece(opposite_piece(players[-2].piece))
-    output.puts(MessagePrinter.player_confirmation(bot.name, bot.piece))
-    output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+    MessagePrinter.player_confirmation(bot.name, bot.piece)
+    MessagePrinter.ask_for_turn_order(players[-2].name)
     assign_turn_order(get_input)
     moves
   end
@@ -200,7 +199,7 @@ class Game
     if board.valid_move?(input)
       board.spaces[input.to_i] = player.piece
     else
-      output.puts(MessagePrinter.invalid_move(input))
+      MessagePrinter.invalid_move(input)
       get_human_spot(get_input)
     end
   end

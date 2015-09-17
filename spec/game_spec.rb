@@ -68,8 +68,6 @@ context "when playing the game" do
 
   describe "#moves" do
     it "always ends up in a tie in a computer vs computer game" do
-      @output = StringIO.new
-      @game.output = @output
       @game.create_bot
       @game.assign_player_piece('X')
       @game.create_bot
