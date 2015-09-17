@@ -76,4 +76,8 @@ class MessagePrinter
     "'A strange game.  The only winning move is not to play.' - War Games".colorize(:yellow)
   end
 
+  def self.play_again
+    puts "Would you like to play again?  Type (y) for yes and (n) for no.".colorize(:green)
+  end
+
 end

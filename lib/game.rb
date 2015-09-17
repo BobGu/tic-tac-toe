@@ -50,6 +50,10 @@ class Game
     input == "CC"
   end
 
+  def play_again?(input)
+    input.upcase == 'Y'
+  end
+
   def assign_player_piece(input)
     if valid_piece?(input.upcase)
       players[-1].piece = input.upcase
@@ -141,6 +145,14 @@ class Game
       end
     end
     output.puts(MessagePrinter.tie_game) if tie?
+    MessagePrinter.play_again
+    if play_again?(get_input)
+      @board = Board.new
+      output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
+      assign_turn_order(get_input)
+      output.puts(MessagePrinter.board(board.spaces))
+      moves
+    end
   end
 
   def human_vs_computer
@@ -150,6 +162,7 @@ class Game
     assign_player_piece(opposite_piece(human.piece))
     output.puts(MessagePrinter.ask_for_turn_order(human.name))
     assign_turn_order(get_input)
+    output.puts(MessagePrinter.ask_for_turn_order(players[-2].name))
     game_instructions
     moves
   end
