@@ -6,7 +6,6 @@ require_relative '../lib/bot'
 require_relative '../lib/board_evaluator'
 class Game
   attr_accessor :input,
-                :output,
                 :board,
                 :human,
                 :bot,
@@ -244,6 +243,6 @@ class Game
     BoardEvaluator.tie?(board.spaces)
   end
 
-  protected :board
+  protected :board, :players
 
 end

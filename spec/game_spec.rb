@@ -56,9 +56,7 @@ context "when playing the game" do
 
     it "asks player again for a spot on invalid input" do
       @input  = StringIO.new("1\n")
-      @output = StringIO.new
       @game.input = @input
-      @game.output = @output
       @game.assign_human_name("John")
       @game.assign_player_piece("X")
       @game.get_human_spot("10")
@@ -71,7 +69,7 @@ context "when playing the game" do
       @game.create_bot
       @game.assign_player_piece('X')
       @game.create_bot
-      @game.assign_player_piece(@game.opposite_piece(@game.players[-2].piece))
+      @game.assign_player_piece(@game.opposite_piece(@game.send(:players)[-2].piece))
       @game.assign_turn_order('1')
       100.times do
         @input = StringIO.new('n')
