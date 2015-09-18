@@ -243,6 +243,11 @@ class Game
     BoardEvaluator.tie?(board.spaces)
   end
 
-  protected :board, :players
+  protected :board,
+            :players,
+            :first_player,
+            :second_player,
+            :bot,
+            :human
 
 end

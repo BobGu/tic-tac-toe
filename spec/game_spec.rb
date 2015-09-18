@@ -9,7 +9,7 @@ context "when playing the game" do
     it "assigns a humans piece" do
       @game.assign_human_name("John")
       @game.assign_player_piece('X')
-      expect(@game.human.piece).to eq('X')
+      expect(@game.send(:human).piece).to eq('X')
     end
   end
 
@@ -18,9 +18,9 @@ context "when playing the game" do
       @game.assign_human_name("John")
       @game.assign_player_piece('X')
       @game.create_bot
-      expect(@game.opposite_piece(@game.human.piece)).to eq('O')
-      @game.human.piece = 'O'
-      expect(@game.opposite_piece(@game.human.piece)).to eq('X')
+      expect(@game.opposite_piece(@game.send(:human).piece)).to eq('O')
+      @game.send(:human).piece = 'O'
+      expect(@game.opposite_piece(@game.send(:human).piece)).to eq('X')
     end
   end
 
