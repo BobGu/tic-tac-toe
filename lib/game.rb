@@ -244,4 +244,6 @@ class Game
     BoardEvaluator.tie?(board.spaces)
   end
 
+  protected :board
+
 end

@@ -26,22 +26,22 @@ context "when playing the game" do
 
   describe "#won?" do
     it "returns true or false if game is won" do
-      @game.board.spaces = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
+      @game.send(:board).spaces = ["O", "1", "2", "X", "O", "X", "O", "7", "O"]
       expect(@game.won?).to be true
-      @game.board.spaces = ["0", "1", "X", "3", "X", "O", "6", "O", "8"]
+      @game.send(:board).spaces = ["0", "1", "X", "3", "X", "O", "6", "O", "8"]
       expect(@game.won?).to be false
-      @game.board.spaces = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
+      @game.send(:board).spaces = ["O", "1", "X", "O", "X", "5", "O", "7", "8"]
       expect(@game.won?).to be true
-      @game.board.spaces = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
+      @game.send(:board).spaces = ["O", "X", "O", "X", "X", "X", "6", "7", "8"]
       expect(@game.won?).to be true
     end
   end
 
   describe "#tie?" do
     it "returns true or false if it is a tie" do
-      @game.board.spaces = ["O", "X", "O", "X", "O", "X", "X", "O", "X"]
+      @game.send(:board).spaces = ["O", "X", "O", "X", "O", "X", "X", "O", "X"]
       expect(@game.tie?).to be true
-      @game.board.spaces = ["O", "X", "O", "X", "O", "X", "X", "O", "8"]
+      @game.send(:board).spaces = ["O", "X", "O", "X", "O", "X", "X", "O", "8"]
       expect(@game.tie?).to be false
     end
   end
@@ -51,7 +51,7 @@ context "when playing the game" do
       @game.assign_human_name('John')
       @game.assign_player_piece('O')
       @game.get_human_spot("1")
-      expect(@game.board.spaces).not_to include('1')
+      expect(@game.send(:board).spaces).not_to include('1')
     end
 
     it "asks player again for a spot on invalid input" do
@@ -62,7 +62,7 @@ context "when playing the game" do
       @game.assign_human_name("John")
       @game.assign_player_piece("X")
       @game.get_human_spot("10")
-      expect(@game.board.spaces[1]).to eq("X")
+      expect(@game.send(:board).spaces[1]).to eq("X")
     end
   end
 
