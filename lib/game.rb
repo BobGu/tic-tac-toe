@@ -19,6 +19,13 @@ class Game
     @players ||= []
   end
 
+
+  def start_game
+    game_intro
+  end
+
+  protected
+
   def get_input
     input.gets.chomp
   end
@@ -101,10 +108,6 @@ class Game
     MessagePrinter.instructions
     MessagePrinter.example_board
     MessagePrinter.board(board.spaces)
-  end
-
-  def start_game
-    game_intro
   end
 
   def bot_or_human(player)
