@@ -59,25 +59,26 @@ context "when playing the game" do
     it "asks player again for a spot on invalid input" do
       @input  = StringIO.new("1\n")
       @game.input = @input
-      @game.assign_human_name("John")
-      @game.assign_player_piece("X")
-      @game.get_human_spot("10")
+      @game.send(:assign_human_name, "John")
+      @game.send(:assign_player_piece, "X")
+      @game.send(:get_human_spot, "10")
       expect(@game.send(:board).spaces[1]).to eq("X")
     end
   end
 
   describe "#moves" do
     it "always ends up in a tie in a computer vs computer game" do
-      @game.create_bot
-      @game.assign_player_piece('X')
-      @game.create_bot
-      @game.assign_player_piece(@game.opposite_piece(@game.send(:players)[-2].piece))
-      @game.assign_turn_order('1')
+      @game.send(:create_bot)
+      @game.send(:assign_player_piece, "X")
+      @game.send(:create_bot)
+      player_piece = @game.send(:players)[-2].piece
+      @game.send(:assign_player_piece, @game.send(:opposite_piece, player_piece))
+      @game.send(:assign_turn_order, "1")
       100.times do
         @input = StringIO.new('n')
         @game.input = @input
-        @game.moves
-        expect(@game.tie?).to eq true
+        @game.send(:moves)
+        expect(@game.send(:tie?)).to eq true
       end
     end
   end

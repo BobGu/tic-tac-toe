@@ -19,7 +19,6 @@ class Game
     @players ||= []
   end
 
-
   def start_game
     game_intro
   end
