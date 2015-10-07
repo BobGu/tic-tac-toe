@@ -104,6 +104,28 @@ context "the computer player" do
     end
   end
 
+  describe "#counter_corner_side_middle_strategy" do
+    it "returns the opposite corner space of the humans piece" do
+      board = Board.new
+      bot = Bot.new
+      bot.piece = "O"
+      board.spaces = [
+                       "0", "1", "X",
+                       "3", "O", "5",
+                       "6", "X", "8"
+                     ]
+      expect(bot.counter_corner_side_middle_strategy(board)).to eq("6")
+
+      board.spaces = [
+                       "X", "1", "2",
+                       "3", "O", "5",
+                       "6", "X", "8"
+                     ]
+
+      expect(bot.counter_corner_side_middle_strategy(board)).to eq("8")
+    end
+  end
+
   describe "#counter_corner_triangle_strategy" do
     it "returns the appropriate corner when countering a corner triangle strategy" do
       board = Board.new
@@ -140,6 +162,7 @@ context "the computer player" do
       expect(bot.counter_corner_triangle_strategy(board.spaces)).to eq("8")
     end
   end
+
 
   describe "#next_best_move" do
     it "trys to play center square first then a corner square" do

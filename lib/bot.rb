@@ -46,7 +46,22 @@ class Bot
 
   def detect_corner_side_middle_strategy?(board)
     board.corners.any? { |diagonal| diagonal == opposite_piece } &&
-    board.side_middles.any? { |side_middle| side_middle == opposite_piece }
+    board.side_middles.any? { |side_middle| side_middle == opposite_piece } &&
+    less_than_five_pieces_on_board?(board.spaces)
+  end
+
+  def counter_corner_side_middle_strategy(board)
+    corner_number = board.corners.index(opposite_piece)
+    case corner_number
+    when 0
+      "8"
+    when 1
+      "6"
+    when 2
+      "2"
+    when 3
+      "0"
+    end
   end
 
   def next_best_move(board)
