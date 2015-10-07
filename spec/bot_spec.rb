@@ -72,6 +72,38 @@ context "the computer player" do
     end
   end
 
+  describe "detect_corner_side_middle_strategy?" do
+    board = Board.new
+    bot = Bot.new
+    bot.piece = "O"
+    # detect if playing corner middle strategy
+    # playing corner side middle when side middle is not right next to the corner its playing
+    it "returns true if the human is using a corner and side middle opening move" do
+      board.spaces = [
+                       "X", "1", "2",
+                       "3", "O", "5",
+                       "6", "X", "8"
+                     ]
+      expect(bot.detect_corner_side_middle_strategy?(board)).to be true
+
+      board.spaces = [
+                       "0", "X", "2",
+                       "3", "O", "5",
+                       "6", "7", "X"
+                     ]
+
+      expect(bot.detect_corner_side_middle_strategy?(board)).to be true
+
+      board.spaces = [
+                       "0", "1", "2",
+                       "X", "O", "5",
+                       "6", "7", "X"
+                     ]
+
+      expect(bot.detect_corner_side_middle_strategy?(board)).to be true
+    end
+  end
+
   describe "#counter_corner_triangle_strategy" do
     it "returns the appropriate corner when countering a corner triangle strategy" do
       board = Board.new

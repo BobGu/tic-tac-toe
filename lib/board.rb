@@ -41,4 +41,12 @@ class Board
     available_corners.count > 0
   end
 
+  def side_middles
+    [spaces[1], spaces[3], spaces[5], spaces[7]]
+  end
+
+  def corners
+    [spaces[0], spaces[2], spaces[6], spaces[8]]
+  end
+
 end

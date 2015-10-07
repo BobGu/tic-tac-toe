@@ -6,6 +6,10 @@ class Bot
     @name = random_name
   end
 
+  def opposite_piece
+    piece == "X" ? "O" : "X"
+  end
+
   def random_name
     ["Johnny5", "T-1000", "Siri", "Skynet", "Al Gore", "iRobot"].sample
   end
@@ -38,6 +42,11 @@ class Bot
     return "2" if spaces[1] == spaces[5]
     return "6" if spaces[3] == spaces[7]
     return "8" if spaces[5] == spaces[7]
+  end
+
+  def detect_corner_side_middle_strategy?(board)
+    board.corners.any? { |diagonal| diagonal == opposite_piece } &&
+    board.side_middles.any? { |side_middle| side_middle == opposite_piece }
   end
 
   def next_best_move(board)

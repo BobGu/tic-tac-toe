@@ -77,4 +77,16 @@ context "a tic tac toe board" do
     end
   end
 
+  describe "#side_middles" do
+    it "returns all the spaces that are on the edge and in the middle" do
+      expect(@board.side_middles).to eq(["1", "3", "5", "7"])
+    end
+  end
+
+  describe "#corners" do
+    it "return all the corners from the board" do
+      expect(@board.corners).to eq (["0", "2", "6", "8"])
+    end
+  end
+
 end
