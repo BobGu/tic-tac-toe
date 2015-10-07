@@ -28,11 +28,6 @@ context "the computer player" do
       board = Board.new
       bot = Bot.new
       bot.piece = "O"
-      board.spaces = [
-                       "X", "1", "2",
-                       "3", "O", "5",
-                       "6", "7", "X"
-                     ]
       counter_move = bot.counter_opposite_corner_strategy
       expect(["1", "3", "5", "7"]).to include(counter_move)
     end
@@ -74,6 +69,43 @@ context "the computer player" do
                      ]
 
       expect(bot.detect_corner_triangle_strategy?(board.spaces)).to be false
+    end
+  end
+
+  describe "#counter_corner_triangle_strategy" do
+    it "returns the appropriate corner when countering a corner triangle strategy" do
+      board = Board.new
+      bot = Bot.new
+      bot.piece = "O"
+      board.spaces = [
+                       "0", "X", "2",
+                       "X", "O", "5",
+                       "6", "7", "8"
+                     ]
+      expect(bot.counter_corner_triangle_strategy(board.spaces)).to eq("0")
+
+      board.spaces = [
+                       "1", "X", "2",
+                       "3", "O", "X",
+                       "6", "7", "8"
+                     ]
+      expect(bot.counter_corner_triangle_strategy(board.spaces)).to eq("2")
+
+      board.spaces = [
+                       "1", "2", "3",
+                       "X", "O", "5",
+                       "6", "X", "8"
+                     ]
+
+      expect(bot.counter_corner_triangle_strategy(board.spaces)).to eq("6")
+
+      board.spaces = [
+                       "0", "1", "2",
+                       "3", "O", "X",
+                       "6", "X", "8"
+                     ]
+
+      expect(bot.counter_corner_triangle_strategy(board.spaces)).to eq("8")
     end
   end
 

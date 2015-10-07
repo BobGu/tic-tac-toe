@@ -27,6 +27,13 @@ class Bot
                           )
   end
 
+  def counter_corner_triangle_strategy(spaces)
+    return "0" if spaces[1] == spaces[3]
+    return "2" if spaces[1] == spaces[5]
+    return "6" if spaces[3] == spaces[7]
+    return "8" if spaces[5] == spaces[7]
+  end
+
   def next_best_move(board)
     return "4" if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
