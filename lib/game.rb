@@ -224,6 +224,7 @@ class Game
     return computer_winning_move(piece) if computer_winning_move(piece)
     return computer_blocking_move(piece) if computer_blocking_move(piece)
     return bot.counter_opposite_corner_strategy if bot.detect_opposite_corner_strategy?(board.spaces)
+    return bot.counter_corner_triangle_strategy(board.spaces) if bot.detect_corner_triangle_strategy?(board.spaces)
     return board.spaces[4] if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
     board.available_spaces.sample

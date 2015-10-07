@@ -19,12 +19,18 @@ class Bot
   end
 
   def detect_corner_triangle_strategy?(spaces)
-    spaces[4] == piece && (
-                           spaces[1] == spaces[3] ||
-                           spaces[1] == spaces[5] ||
-                           spaces[3] == spaces[7] ||
-                           spaces[5] == spaces[7]
-                          )
+    spaces[4] == piece &&
+    less_than_five_pieces_on_board?(spaces) &&
+    (
+     spaces[1] == spaces[3] ||
+     spaces[1] == spaces[5] ||
+     spaces[3] == spaces[7] ||
+     spaces[5] == spaces[7]
+    )
+  end
+
+  def less_than_five_pieces_on_board?(spaces)
+    spaces.select { |space| space == "X" || space == "O" }.count < 5
   end
 
   def counter_corner_triangle_strategy(spaces)
