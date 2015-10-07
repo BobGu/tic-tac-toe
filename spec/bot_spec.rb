@@ -2,7 +2,7 @@ require_relative "../lib/bot"
 require_relative "../lib/board"
 require 'pry'
 context "the computer player" do
-  describe "#opposite_corner_strategy?" do
+  describe "#detect_opposite_corner_strategy?" do
     it "returns true when human player is using an opposite corner strategy" do
       board = Board.new
       bot = Bot.new
@@ -35,6 +35,45 @@ context "the computer player" do
                      ]
       counter_move = bot.counter_opposite_corner_strategy
       expect(["1", "3", "5", "7"]).to include(counter_move)
+    end
+  end
+
+  describe "#detect_corner_triangle_strategy?" do
+    it "detects if human is using a corner triangle strategy" do
+      board = Board.new
+      bot = Bot.new
+      bot.piece = "O"
+      board.spaces = [
+                       "0", "X", "2",
+                       "X", "O", "5",
+                       "6", "7", "8"
+                     ]
+
+      expect(bot.detect_corner_triangle_strategy?(board.spaces)).to be true
+
+      board.spaces = [
+                       "1", "X", "2",
+                       "3", "O", "X",
+                       "6", "7", "8"
+                     ]
+
+      expect(bot.detect_corner_triangle_strategy?(board.spaces)).to be true
+
+      board.spaces = [
+                       "1", "2", "3",
+                       "X", "O", "5",
+                       "6", "X", "8"
+                     ]
+
+      expect(bot.detect_corner_triangle_strategy?(board.spaces)).to be true
+
+      board.spaces = [
+                       "X", "X", "2",
+                       "3", "O", "5",
+                       "6", "7", "8"
+                     ]
+
+      expect(bot.detect_corner_triangle_strategy?(board.spaces)).to be false
     end
   end
 

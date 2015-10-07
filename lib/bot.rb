@@ -18,6 +18,15 @@ class Bot
     ["1", "3", "5", "7"].sample
   end
 
+  def detect_corner_triangle_strategy?(spaces)
+    spaces[4] == piece && (
+                           spaces[1] == spaces[3] ||
+                           spaces[1] == spaces[5] ||
+                           spaces[3] == spaces[7] ||
+                           spaces[5] == spaces[7]
+                          )
+  end
+
   def next_best_move(board)
     return "4" if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
