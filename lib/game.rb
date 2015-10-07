@@ -24,7 +24,7 @@ class Game
     game_intro
   end
 
-  protected
+  private
 
   def get_input
     input.gets.chomp
@@ -223,6 +223,7 @@ class Game
   def computers_best_move(piece)
     return computer_winning_move(piece) if computer_winning_move(piece)
     return computer_blocking_move(piece) if computer_blocking_move(piece)
+    return bot.counter_opposite_corner_strategy if bot.detect_opposite_corner_strategy?(board.spaces)
     return board.spaces[4] if board.center_square_available?
     return board.available_corners.sample if board.available_corner?
     board.available_spaces.sample
@@ -246,7 +247,7 @@ class Game
     BoardEvaluator.tie?(board.spaces)
   end
 
-  protected :board,
+  private :board,
             :players,
             :first_player,
             :second_player,

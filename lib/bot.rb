@@ -10,8 +10,12 @@ class Bot
     ["Johnny5", "T-1000", "Siri", "Skynet", "Al Gore", "iRobot"].sample
   end
 
-  def opposite_corner_strategy?(spaces)
+  def detect_opposite_corner_strategy?(spaces)
     spaces[4] == piece && (spaces[0] == spaces[8] || spaces[6] == spaces[2])
+  end
+
+  def counter_opposite_corner_strategy
+    ["1", "3", "5", "7"].sample
   end
 
   def next_best_move(board)
