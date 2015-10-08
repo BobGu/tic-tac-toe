@@ -15,7 +15,9 @@ class Bot
   end
 
   def detect_opposite_corner_strategy?(spaces)
-    spaces[4] == piece && (spaces[0] == spaces[8] || spaces[6] == spaces[2])
+    spaces[4] == piece &&
+    (spaces[0] == spaces[8] || spaces[6] == spaces[2]) &&
+    less_than_four_pieces_on_board?(spaces)
   end
 
   def counter_opposite_corner_strategy
@@ -24,7 +26,7 @@ class Bot
 
   def detect_corner_triangle_strategy?(spaces)
     spaces[4] == piece &&
-    less_than_five_pieces_on_board?(spaces) &&
+    less_than_four_pieces_on_board?(spaces) &&
     (
      spaces[1] == spaces[3] ||
      spaces[1] == spaces[5] ||
@@ -33,8 +35,8 @@ class Bot
     )
   end
 
-  def less_than_five_pieces_on_board?(spaces)
-    spaces.select { |space| space == "X" || space == "O" }.count < 5
+  def less_than_four_pieces_on_board?(spaces)
+    spaces.select { |space| space == "X" || space == "O" }.count < 4
   end
 
   def counter_corner_triangle_strategy(spaces)
@@ -45,9 +47,9 @@ class Bot
   end
 
   def detect_corner_side_middle_strategy?(board)
-    board.corners.any? { |diagonal| diagonal == opposite_piece } &&
+    board.corners.any? { |corner| corner == opposite_piece } &&
     board.side_middles.any? { |side_middle| side_middle == opposite_piece } &&
-    less_than_five_pieces_on_board?(board.spaces)
+    less_than_four_pieces_on_board?(board.spaces)
   end
 
   def counter_corner_side_middle_strategy(board)
